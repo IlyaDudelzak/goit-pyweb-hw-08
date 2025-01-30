@@ -1,13 +1,11 @@
+from dotenv import dotenv_values
 from mongoengine import connect
-import configparser
 
+config = dotenv_values("../.env")
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+domain = config["MONGO_HOST"]
+mongo_user = config["MONGO_USER"]
+mongo_pass = config["MONGO_PASS"]
+db_name = config["MONGO_DB_NAME"]
 
-mongo_user = config.get('DB', 'user')
-mongodb_pass = config.get('DB', 'pass')
-db_name = config.get('DB', 'db_name')
-domain = config.get('DB', 'domain')
-
-connect(host=f"mongodb+srv://{mongo_user}:{mongodb_pass}@{domain}/?retryWrites=true&w=majority&appName={db_name}", ssl=True, alias='default')
+connect(host=f"mongodb+srv://{mongo_user}:{mongo_pass}@{domain}/?retryWrites=true&w=majority&appName={db_name}", ssl=True, alias='default')

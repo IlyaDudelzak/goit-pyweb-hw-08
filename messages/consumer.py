@@ -1,15 +1,11 @@
-from models import Contact, ObjectId
+from models import Contact, ObjectId, connect
+from connect import channel, connection
 import json
 import pika
 
 QUEUE_NAME = "pyweb-08"
 
 def main():
-    credentials = pika.PlainCredentials("xgztisfp", "yWkCVCo_JSUl8z-ofhF0NGxU0gpjneU3")
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host='hawk.rmq.cloudamqp.com', virtual_host="xgztisfp", port=5672, credentials=credentials))
-    channel = connection.channel()
-
     channel.queue_declare(queue=QUEUE_NAME, durable=True)
 
     def callback(ch, method, properties, body):

@@ -1,13 +1,22 @@
+from dotenv import dotenv_values
 from mongoengine import connect
-import configparser
+import pika
 
+config = dotenv_values("../.env")
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+MONGODB_HOST=config["MONGODB_HOST"]
+MONGODB_USER=config["MONGODB_USER"]
+MONGODB_PASS=config["MONGODB_PASS"]
+MONGODB_NAME=config["MONGODB_NAME"]
 
-mongo_user = config.get('DB', 'user')
-mongodb_pass = config.get('DB', 'pass')
-db_name = config.get('DB', 'db_name')
-domain = config.get('DB', 'domain')
+RABBITMQ_HOST=config["RABBITMQ_HOST"]
+RABBITMQ_USER=config["RABBITMQ_USER"]
+RABBITMQ_PASS=config["RABBITMQ_PASS"]
+RABBITMQ_PORT=config["RABBITMQ_PORT"]
 
-connect(host=f"mongodb+srv://{mongo_user}:{mongodb_pass}@{domain}/?retryWrites=true&w=majority&appName={db_name}", ssl=True, alias='default')
+connect(host=f"mongodb+srv://{MONGODB_USER}:{MONGODB_PASS}@{MONGODB_HOST}/?retryWrites=true&w=majority&appName={MONGODB_NAME}", ssl=True, alias='default')
+
+credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASS)
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host=RABBITMQ_HOST, virtual_host=RABBITMQ_USER, port=RABBITMQ_PORT, credentials=credentials))
+channel = connection.channel()
