@@ -1,7 +1,6 @@
 from models import Contact, ObjectId, connect
 from connect import channel, connection
 import json
-import pika
 
 QUEUE_NAME = "pyweb-08"
 
