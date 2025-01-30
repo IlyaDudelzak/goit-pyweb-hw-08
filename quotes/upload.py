@@ -54,5 +54,3 @@ if __name__ == '__main__':
         author.save()
     for quote in quotes:
         quote.save()
-
-print(authors, quotes)

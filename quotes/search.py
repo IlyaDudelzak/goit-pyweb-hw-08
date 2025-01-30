@@ -25,6 +25,7 @@ if __name__ == '__main__':
                                 if(tagg.name == tag):
                                     print_quote(quote)
                                     should_break = True
+                                    break
                             if(should_break):
                                 break
                 case "exit":
